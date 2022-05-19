@@ -1,37 +1,13 @@
+#include "grafos.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <locale.h>
-#include "grafosListasADJ.h"
+#include "listas.h"
 #include "filas.h"
 
-Lista* ordenar(Lista* l) {
-    if(l != NULL) {
-        if(l->prox != NULL) {
-            printf("l->info: %d l->prox->info: %d\n",l->info,l->prox->info);
-            if(l->info > l->prox->info) {
-                printf("entrou!!");
-                Lista* aux = l;
-                /*printf("aux->info: %d\n",aux->info);
-                aux->prox = l->prox->prox;
-                l = l->prox;
-                printf("l: %d\n",l->info);
-                l->prox = aux;
-                //l->prox = ordenar(l->prox);*/
-
-                l = l->prox;
-                aux->prox = l->prox;
-                l->prox = aux;
-                l->prox = ordenar(l->prox);
-
-                printf("L: %d\n",l->info);
-                printf("L->prox: %d\n",l->prox->info);
-            }
-        }
-    }
-    return l;
-}
-
+int timestamp_grafos = 0;
 
 //cria uma aresta
 Aresta ARESTA(int v,int w) {
@@ -43,11 +19,11 @@ Aresta ARESTA(int v,int w) {
 
 
 //inicializa um grafo com |V| vertices
-Grafo inicializa(int V,int orientado) {
+Grafo inicializa(int V,int ordenado) {
     Grafo novo = (struct grafo*) malloc(sizeof(struct grafo));
     printf("Alocou grafo!!\n");
     novo->v = V;
-    novo->ordenado = orientado;
+    novo->ordenado = ordenado;
     novo->vetor = (Lista**) malloc(V*sizeof(Lista*));
     printf("Alocou vetor!!!\n");
     for(int i = 0; i < V; i++) {
@@ -107,12 +83,12 @@ int pertence(Grafo g, Aresta e) {
 //(d) Implemente a busca em profundidade a partir de um vertice de origem s, tal que imprima a
 //arvore de busca obtida.
 
-//int timestamp = 0;//variável global de timeStamp;
+
 
 void DFS_visit(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice) {
     c[indice] = cinza;
-    timestamp++;
-    d[indice] = timestamp;
+    timestamp_grafos++;
+    d[indice] = timestamp_grafos;
     while(v != NULL) {
         if(c[v->info] == branco) {
             pi[v->info] = indice;
@@ -121,8 +97,8 @@ void DFS_visit(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice) {
         v = v->prox;
     }
     c[indice] = preto;
-    timestamp++;
-    f[indice] = timestamp;
+    timestamp_grafos++;
+    f[indice] = timestamp_grafos;
 }
 
 
@@ -152,7 +128,6 @@ void showArvore(Grafo g,int d[]) {
     //printf("\n");
 }
 
-//busca em profundidade
 void DFS(Grafo g) {
     cor c[g->v];
     int pi[g->v];
@@ -164,14 +139,17 @@ void DFS(Grafo g) {
         pi[i] = -1;
     }
 
-    timestamp = 0;
+    timestamp_grafos = 0;
     for(int i = 0; i < g->v; i++) {
         if(c[i] == branco)
             DFS_visit(g,g->vetor[i],c,pi,d,f,i);
     }
 
     showArvore(g,d);
-
+    /*printVet(c,g->v);
+    printVet(pi,g->v);
+    printVet(d,g->v);
+    printVet(f,g->v);*/
 }
 
 void DFS_origem(Grafo g,int vertice) {
@@ -185,7 +163,7 @@ void DFS_origem(Grafo g,int vertice) {
         pi[i] = -1;
     }
 
-    timestamp = 0;
+    timestamp_grafos = 0;
     DFS_visit(g,g->vetor[vertice],c,pi,d,f,vertice);
     showArvore(g,d);
 }
@@ -201,7 +179,6 @@ busca obtida.*/
 
 
 
-//busca por largura
 void BFS(Grafo g,int vertice) {
     Fila* q = cria_fila_vazia();
     cor c[g->v];
@@ -244,6 +221,10 @@ void BFS(Grafo g,int vertice) {
     }
     printf("\n\n\n");
     showArvore(g,d);
+    /*printVet(c,g->v);
+    printVet(pi,g->v);
+    printVet(d,g->v);
+    printVet(f,g->v);*/
 }
 
 
@@ -251,8 +232,8 @@ void BFS(Grafo g,int vertice) {
 
 void DFS_visit_OT(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice,Lista**l) {
     c[indice] = cinza;
-    timestamp++;
-    d[indice] = timestamp;
+    timestamp_grafos++;
+    d[indice] = timestamp_grafos;
     while(v != NULL) {
         if(c[v->info] == branco) {
             pi[v->info] = indice;
@@ -261,8 +242,8 @@ void DFS_visit_OT(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice,L
         v = v->prox;
     }
     c[indice] = preto;
-    timestamp++;
-    f[indice] = timestamp;
+    timestamp_grafos++;
+    f[indice] = timestamp_grafos;
     (*l) = inserir(*l,indice);
 }
 
@@ -279,7 +260,7 @@ Lista* DFS_OT(Grafo g) {
         pi[i] = -1;
     }
 
-    timestamp = 0;
+    timestamp_grafos = 0;
     for(int i = 0; i < g->v; i++) {
         if(c[i] == branco)
             DFS_visit_OT(g,g->vetor[i],c,pi,d,f,i,&l);
@@ -292,4 +273,6 @@ Lista* ordenacaoTopologica(Grafo g){
     Lista* l = DFS_OT(g);
     return l;
 }
+
+
 

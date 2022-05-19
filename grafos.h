@@ -1,11 +1,18 @@
+#ifndef GRAFOS_H_
+#define GRAFOS_H_
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <locale.h>
 #include "listas.h"
+#include "filas.h"
 
 enum cor {branco,cinza,preto};
 typedef enum cor cor;
+
+
 
 typedef struct {
     int v;
@@ -33,7 +40,7 @@ Grafo inicializa(int V,int ordenado);
 //Insere a aresta e no grafo g
 void grafoInsere(Grafo g, Aresta e);
 //Remove a aresta e do grafo g
-void grafoRemove(Grafo g, Aresta e);
+void grafoRemove(Grafo g, Aresta e) ;
 //Preenche o vetor com as arestas de g
 //Retorna |E|, quantidade de arestas
 int grafoArestas(Aresta a[], Grafo g);
@@ -41,12 +48,9 @@ int grafoArestas(Aresta a[], Grafo g);
 void imprimirGrafo(Grafo g);
 
 
-int pertence(Grafo g, Aresta e);
+int pertence(Grafo g, Aresta e) ;
 
-//(d) Implemente a busca em profundidade a partir de um vertice de origem s, tal que imprima a
-//arvore de busca obtida.
 
-int timestamp = 0;//variável global de timeStamp;
 
 void DFS_visit(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice);
 
@@ -60,25 +64,14 @@ void DFS(Grafo g);
 
 void DFS_origem(Grafo g,int vertice);
 
-
-
-
-
-/*(e) Implemente a busca em largura a partir de um vertice de origem s, tal que imprima a arvore de
-busca obtida.*/
-
-
-
-
 void BFS(Grafo g,int vertice);
 
 
 //ORDENAÇÃO TOPOLÓGICA:
 
 void DFS_visit_OT(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice,Lista**l);
-
-
-Lista* DFS_OT(Grafo g);
-
-
+Lista* DFS_OT(Grafo g) ;
 Lista* ordenacaoTopologica(Grafo g);
+
+#endif // GRAFOS_H_
+

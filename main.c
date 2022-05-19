@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <locale.h>
-#include "grafosListasADJ.h"
+#include "grafos.h"
 #include "listas.h"
 
 
