@@ -17,6 +17,7 @@ typedef enum cor cor;
 typedef struct {
     int v;
     int w;
+    int peso;
 } Aresta;
 // cria uma aresta (v,w)
 
@@ -30,7 +31,7 @@ struct grafo {
 typedef struct grafo * Grafo;
 
 //cria uma aresta
-Aresta ARESTA(int v,int w);
+Aresta ARESTA(int v,int w, int peso);
 
 
 //inicializa um grafo com |V| vertices

@@ -7,13 +7,14 @@
 #include "listas.h"
 #include "filas.h"
 
-int timestamp_grafos = 0;
+int timestamp_grafos = 0;//variável global de timeStamp.
 
 //cria uma aresta
-Aresta ARESTA(int v,int w) {
+Aresta ARESTA(int v,int w, int peso) {
     Aresta a;
     a.v = v;
     a.w = w;
+    a.peso = peso;
     return a;
 }
 
@@ -58,7 +59,7 @@ int grafoArestas(Aresta a[], Grafo g) {
     for(int i = 0; i < g->v; i++) {
         aux = g->vetor[i];
         while(aux != NULL) {
-            a[count++] = ARESTA(i,aux->info);
+            a[count++] = ARESTA(i,aux->info,0);//rever isso, o peso inserido
             aux = aux->prox;
         }
     }
