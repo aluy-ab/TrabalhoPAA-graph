@@ -88,6 +88,7 @@ int pertence(Grafo g, Aresta e) {
 
 void DFS_visit(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice) {
     c[indice] = cinza;
+    printf("%d ",indice);//imprimir vértice visitado.
     timestamp_grafos++;
     d[indice] = timestamp_grafos;
     while(v != NULL) {
@@ -98,6 +99,7 @@ void DFS_visit(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice) {
         v = v->prox;
     }
     c[indice] = preto;
+
     timestamp_grafos++;
     f[indice] = timestamp_grafos;
 }
@@ -166,7 +168,7 @@ void DFS_origem(Grafo g,int vertice) {
 
     timestamp_grafos = 0;
     DFS_visit(g,g->vetor[vertice],c,pi,d,f,vertice);
-    showArvore(g,d);
+    //showArvore(g,d);
 }
 
 
@@ -196,6 +198,7 @@ void BFS(Grafo g,int vertice) {
     }
 
     c[vertice] = cinza;
+    printf("%d ",vertice);//imprimir vértiuce visitado.
     pi[vertice] = -1;
     d[vertice] = 0;
     enqueue(q,vertice);
@@ -210,6 +213,7 @@ void BFS(Grafo g,int vertice) {
             if(c[info] == branco){
                 //printf("%d ",info);
                 c[info] = cinza;
+                 printf("%d ",info);//imprimir vértiuce visitado.
                 d[info] = d[*u] + 1;
                 pi[info] = (*u);
                 enqueue(q,info);
@@ -221,7 +225,7 @@ void BFS(Grafo g,int vertice) {
         free(u);
     }
     printf("\n\n\n");
-    showArvore(g,d);
+    //showArvore(g,d);
     /*printVet(c,g->v);
     printVet(pi,g->v);
     printVet(d,g->v);
