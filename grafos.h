@@ -25,7 +25,7 @@ typedef struct {
 struct grafo {
     Lista **vetor;
     int v;//quantidade de vértices maximo
-    int ordenado;
+    int orientado;
 };
 
 typedef struct grafo * Grafo;
@@ -65,6 +65,10 @@ void DFS(Grafo g);
 
 void DFS_origem(Grafo g,int vertice);
 
+void InicializaOrigem(Grafo g, int vertice,int d[], int pi[]);
+void Relax(Aresta a, int d[], int pi[]);
+int Bellman_Ford(Grafo g,int origem);
+void printCaminho(int pi[],int n);
 void BFS(Grafo g,int vertice);
 
 
@@ -75,4 +79,3 @@ Lista* DFS_OT(Grafo g) ;
 Lista* ordenacaoTopologica(Grafo g);
 
 #endif // GRAFOS_H_
-

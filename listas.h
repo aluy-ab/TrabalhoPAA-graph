@@ -8,6 +8,7 @@ typedef int TipoItem; // tipo dos elementos na lista
 
 typedef struct no { //estrutura para lista encadeada
     TipoItem info;
+    TipoItem peso;
     struct no * prox; // ponteiro para proximo elemento
 } Lista;
 
@@ -24,13 +25,14 @@ int vazia(Lista *l) ;
 //Retorno: lista alterada
 //Pré-condição: nenhuma
 //Pós_condição: elemento é inserido na lista.
-Lista* inserir(Lista* l, int info) ;
+Lista* inserirComPeso(Lista* l, TipoItem info, TipoItem peso);
+Lista* inserir(Lista* l, TipoItem info);
 //Remove um elemento da lista
 //entrada: listae elemento a ser removido
 //retorno: lista alterada
 //pré_condiçao: nenhuma
 //Pós-condição: elemento e removido da lista.
-Lista* remover(Lista* l, int info);
+Lista* remover(Lista* l, TipoItem info);
 
 //Imprime os elementos da lista
 //Entrada : lista
@@ -67,7 +69,7 @@ Lista* intercalar(Lista* l1, Lista* l2) ;
 //pre- requisito: nenhum
 //Pós-requisitov: l1 é modificada
 Lista* append(Lista* l1, Lista* l2) ;
-int conta_ocorrencias(Lista* l,int x) ;
+int conta_ocorrencias(Lista* l,TipoItem x) ;
 Lista* elimina_repetidos(Lista* l);
 
 Lista* pares(Lista* l);

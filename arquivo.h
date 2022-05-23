@@ -3,8 +3,6 @@
 
 #include "grafos.h"
 
-
-
 Grafo ler_grafo(char* nome_arquivo);
 
 #endif

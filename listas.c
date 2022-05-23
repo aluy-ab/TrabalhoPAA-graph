@@ -18,19 +18,32 @@ int vazia(Lista *l) {
 //Retorno: lista alterada
 //Pré-condição: nenhuma
 //Pós_condição: elemento é inserido na lista.
-Lista* inserir(Lista* l, int info) {
+Lista* inserirComPeso(Lista* l, TipoItem info, TipoItem peso) {
+    Lista* aux = (Lista*) malloc(sizeof(Lista));
+    aux->info = info;
+    aux->peso = peso;
+    aux->prox = l;
+    return aux;//l = inserir(l, 50); exemplo de chmada de função
+}
+
+
+//insere um eleemento na lista
+//Entrada: llista e elemento a ser inserido
+//Retorno: lista alterada
+//Pré-condição: nenhuma
+//Pós_condição: elemento é inserido na lista.
+Lista* inserir(Lista* l, TipoItem info) {
     Lista* aux = (Lista*) malloc(sizeof(Lista));
     aux->info = info;
     aux->prox = l;
     return aux;//l = inserir(l, 50); exemplo de chmada de função
 }
-
 //Remove um elemento da lista
 //entrada: listae elemento a ser removido
 //retorno: lista alterada
 //pré_condiçao: nenhuma
 //Pós-condição: elemento e removido da lista.
-Lista* remover(Lista* l, int info) {
+Lista* remover(Lista* l, TipoItem info) {
     Lista* ant = l;//elemento anterior
     Lista* p = l;// para encontrar o elemento a ser retirado
 
@@ -145,7 +158,7 @@ Lista* append(Lista* l1, Lista* l2) {
     return l1;
 }
 
-int conta_ocorrencias(Lista* l,int x) {
+int conta_ocorrencias(Lista* l,TipoItem x) {
     int soma = 0;
     while(l != NULL) {
         if(l->info == x)

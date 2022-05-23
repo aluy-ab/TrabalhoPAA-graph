@@ -22,11 +22,9 @@ Aresta ARESTA(int v,int w, int peso) {
 //inicializa um grafo com |V| vertices
 Grafo inicializa(int V,int ordenado) {
     Grafo novo = (struct grafo*) malloc(sizeof(struct grafo));
-    printf("Alocou grafo!!\n");
     novo->v = V;
-    novo->ordenado = ordenado;
+    novo->orientado = ordenado;
     novo->vetor = (Lista**) malloc(V*sizeof(Lista*));
-    printf("Alocou vetor!!!\n");
     for(int i = 0; i < V; i++) {
         novo->vetor[i] = NULL;
     }
@@ -36,9 +34,9 @@ Grafo inicializa(int V,int ordenado) {
 
 //Insere a aresta e no grafo g
 void grafoInsere(Grafo g, Aresta e) {
-    g->vetor[e.v] = inserir(g->vetor[e.v],e.w);
-    if(g->ordenado == 0){
-        g->vetor[e.w] = inserir(g->vetor[e.w],e.v);
+    g->vetor[e.v] = inserirComPeso(g->vetor[e.v],e.w,e.peso);
+    if(g->orientado == 0){
+        g->vetor[e.w] = inserirComPeso(g->vetor[e.w],e.v,e.peso);
         g->vetor[e.w] = ordenar(g->vetor[e.w]);
     }
     g->vetor[e.v] = ordenar(g->vetor[e.v]);
@@ -47,7 +45,7 @@ void grafoInsere(Grafo g, Aresta e) {
 //Remove a aresta e do grafo g
 void grafoRemove(Grafo g, Aresta e) {
     g->vetor[e.v] = remover(g->vetor[e.v],e.w);
-    if(g->ordenado == 0){
+    if(g->orientado == 0){
         g->vetor[e.w] = remover(g->vetor[e.w],e.v);
     }
 }
@@ -59,7 +57,7 @@ int grafoArestas(Aresta a[], Grafo g) {
     for(int i = 0; i < g->v; i++) {
         aux = g->vetor[i];
         while(aux != NULL) {
-            a[count++] = ARESTA(i,aux->info,0);//rever isso, o peso inserido
+            a[count++] = ARESTA(i,aux->info,aux->peso);//rever isso, o peso inserido
             aux = aux->prox;
         }
     }
@@ -233,6 +231,71 @@ void BFS(Grafo g,int vertice) {
 }
 
 
+void InicializaOrigem(Grafo g, int vertice,int d[], int pi[]){
+    for(int i = 0; i < g->v; i++){
+        d[i] =  INT_MAX;//maior valor de int = infinito. //PEDIR PARA O PROFESSOR, NÃO FUNCIONOU COM NUMERO INFINITO, FUNCIONOU COM 0.
+        pi[i] = -1;
+    }
+    d[vertice] = 0;
+}
+
+
+void Relax(Aresta a, int d[], int pi[]){
+    if(d[a.w] > d[a.v] + a.peso && d[a.v] != INT_MAX){
+        printf("Entrou relaxar !!!\n");
+        d[a.w] = d[a.v] + a.peso;
+        pi[a.w] = a.v;
+    }
+}
+
+
+
+//pós-condição: caso exista ciclo de peso negativo, o algoritmo retorna false
+int Bellman_Ford(Grafo g,int origem){
+    int d[g->v];
+    int pi[g->v];
+
+    InicializaOrigem(g,origem,d,pi);
+    printVet(d,g->v);
+    printVet(pi,g->v);
+
+    Aresta e[g->v * g->v];
+    int count_arestas = grafoArestas(e,g);
+
+
+
+    for(int i = 0; i < g->v -1; i++){
+        for(int j = 0; j < count_arestas; j++){
+            Relax(e[j],d,pi);
+        }
+    }
+    for(int i = 0; i < count_arestas; i++){
+        if(d[e[i].w] > d[e[i].v] + e[i].peso && d[e[i].v] != INT_MAX)
+            return 0;
+    }
+
+    printf("Imprimindo o vetor pi!!\n");
+    printVet(pi,g->v);
+    //imprimir os caminhos:
+    printf("Origem: %d\n",origem);
+    for(int i = 0; i < g->v; i++){
+        printf("Destino:  %d dist.:  %d caminho:  ",i,d[i]);
+        printCaminho(pi,i);
+        printf("%d",i);
+        printf("\n");
+    }
+
+
+    return 1;
+}
+
+void printCaminho(int pi[],int n){
+    if(pi[n] != -1){
+        printCaminho(pi,pi[n]);
+        printf("%d ",pi[n]);
+    }
+}
+
 //ORDENAÇÃO TOPOLÓGICA:
 
 void DFS_visit_OT(Grafo g,Lista *v,cor c[],int pi[],int d[],int f[],int indice,Lista**l) {
@@ -278,6 +341,3 @@ Lista* ordenacaoTopologica(Grafo g){
     Lista* l = DFS_OT(g);
     return l;
 }
-
-
-
